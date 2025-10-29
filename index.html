@@ -333,199 +333,187 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" defer></script>
   <script>
-    const members = [
-      { name: "Afdan Arrasyd", role: "" },
-      { name: "Gilang Ramadhan", role: "Admin" },
-      { name: "Kennan Nathnael Wardhana", role: "" },
-      { name: "Rifki Aldian Saputra", role: "" },
-      { name: "Amri Akbar Alfarizy", role: "" },
-      { name: "Ardi Nur Arief", role: "" },
-      { name: "Ahmad Faisal Deskian", role: "" },
-      { name: "Akhdan Mahya Sakha", role: "" },
-      { name: "Afriansyah Samsul", role: "" },
-      { name: "Muhammad Fajri", role: "" },
-      { name: "Farras Alfarizy", role: "" },
-      { name: "Dafa Almer Dzaky", role:""},
-    ];
+const members = [
+  { name: "Afdan Arrasyd", role: "" },
+  { name: "Gilang Ramadhan", role: "Admin" },
+  { name: "Kennan Nathnael Wardhana", role: "" },
+  { name: "Rifki Aldian Saputra", role: "" },
+  { name: "Amri Akbar Alfarizy", role: "" },
+  { name: "Ardi Nur Arief", role: "" },
+  { name: "Ahmad Faisal Deskian", role: "" },
+  { name: "Akhdan Mahya Sakha", role: "" },
+  { name: "Afriansyah Samsul", role: "" },
+  { name: "Muhammad Fajri", role: "" },
+  { name: "Farras Alfarizy", role: "" },
+  { name: "Dafa Almer Dzaky", role:""},
+];
 
-    const photoCount = 6;
-    const welcomeText = "Member Sigma";
-    const aboutText = "Kami adalah Member Sigma — sebuah kelompok sahabat yang terbentuk dari kebersamaan, tawa, dan kenangan tak terlupakan. Dari diskusi larut malam hingga petualangan tak terduga, setiap momen bersama adalah bagian dari cerita yang kami banggakan. Meski jalan hidup mungkin berbeda, ikatan kami tetap utuh: kuat, tulus, dan penuh makna.";
-    const ahuraStoryText = "Ahura adalah salah satu bagian dari grup kami. Namun, ia harus meninggalkan kami karena pindah sekolah. Meski kini tak lagi bersama, kenangan dan tawanya tetap hidup dalam cerita Member Sigma.";
+const photoCount = 6;
+const welcomeText = "Member Sigma";
+const aboutText = "Kami adalah Member Sigma — sebuah kelompok sahabat yang terbentuk dari kebersamaan, tawa, dan kenangan tak terlupakan. Dari diskusi larut malam hingga petualangan tak terduga, setiap momen bersama adalah bagian dari cerita yang kami banggakan. Meski jalan hidup mungkin berbeda, ikatan kami tetap utuh: kuat, tulus, dan penuh makna.";
+const ahuraStoryText = "Ahura adalah salah satu bagian dari grup kami. Namun, ia harus meninggalkan kami karena pindah sekolah. Meski kini tak lagi bersama, kenangan dan tawanya tetap hidup dalam cerita Member Sigma.";
 
-    function typeText(element, text, delay = 120) {
-      return new Promise(resolve => {
-        let i = 0;
-        const timer = setInterval(() => {
-          if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-          } else {
-            clearInterval(timer);
-            resolve();
-          }
-        }, delay);
-      });
-    }
+function typeText(element, text, delay = 120) {
+  return new Promise(resolve => {
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(timer);
+        resolve();
+      }
+    }, delay);
+  });
+}
 
-    function smoothScrollTo(element) {
-      window.scrollTo({
-        top: element.offsetTop - 100,
-        behavior: 'smooth'
-      });
-    }
+function smoothScrollTo(element) {
+  window.scrollTo({
+    top: element.offsetTop - 100,
+    behavior: 'smooth'
+  });
+}
 
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-    async function startExperience() {
-      document.getElementById('start-screen').style.opacity = '0';
-      document.getElementById('start-screen').style.visibility = 'hidden';
+async function startExperience() {
+  document.getElementById('start-screen').style.opacity = '0';
+  document.getElementById('start-screen').style.visibility = 'hidden';
 
-      document.getElementById('start-btn').addEventListener('click', async () => {
   const audio = document.getElementById('bg-music');
   audio.volume = 0.5;
-  
-  try {
-   await audio.play();
-  } catch (e) {
-    console.warn("Autoplay diblokir:", e);
-    
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      const handler = () => {
+        audio.play();
+        document.body.removeEventListener('click', handler);
+        document.body.removeEventListener('touchstart', handler);
+      };
+      document.body.addEventListener('click', handler, { once: true });
+      document.body.addEventListener('touchstart', handler, { once: true });
+    });
   }
 
-  await star
-});
-      }
+  await delay(1000);
+  document.getElementById('main-content').style.opacity = '1';
 
-      await delay(1000);
-      document.getElementById('main-content').style.opacity = '1';
+  const welcomeEl = document.getElementById('welcome-text');
+  await typeText(welcomeEl, welcomeText, 130);
+  welcomeEl.style.animation = 'none';
+  await delay(1000);
 
-      const welcomeEl = document.getElementById('welcome-text');
-      await typeText(welcomeEl, welcomeText, 130);
-      welcomeEl.style.animation = 'none';
-      await delay(1000);
+  const aboutSection = document.querySelector('.about');
+  smoothScrollTo(aboutSection);
+  await delay(1200);
+  const aboutEl = document.getElementById('about-text');
+  await typeText(aboutEl, aboutText, 100);
+  await delay(1400);
 
-      const aboutSection = document.querySelector('.about');
-      smoothScrollTo(aboutSection);
-      await delay(1200);
-      const aboutEl = document.getElementById('about-text');
-      await typeText(aboutEl, aboutText, 100);
-      await delay(1400);
+  const membersGrid = document.getElementById('members-grid');
+  smoothScrollTo(membersGrid);
+  await delay(1400);
 
-      const membersGrid = document.getElementById('members-grid');
-      smoothScrollTo(membersGrid);
-      await delay(1400);
+  const memberCards = [];
+  for (let i = 0; i < members.length; i++) {
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    card.innerHTML = `
+      <div class="avatar"><i class="fas fa-user"></i></div>
+      <div class="name">${members[i].name}</div>
+      ${members[i].role ? `<div class="role">${members[i].role}</div>` : ''}
+    `;
+    membersGrid.appendChild(card);
+    memberCards.push(card);
 
-      const memberCards = [];
-      for (let i = 0; i < members.length; i++) {
-        const card = document.createElement('div');
-        card.className = 'member-card';
-        card.innerHTML = `
-          <div class="avatar"><i class="fas fa-user"></i></div>
-          <div class="name">${members[i].name}</div>
-          ${members[i].role ? `<div class="role">${members[i].role}</div>` : ''}
-        `;
-        membersGrid.appendChild(card);
-        memberCards.push(card);
-
-        if (i === 0) {
-          await delay(600);
-          smoothScrollTo(card);
-          await delay(600);
-        }
-        await delay(900);
-        card.classList.add('show');
-        if (i === Math.floor(members.length / 2)) {
-          await delay(500);
-          smoothScrollTo(card);
-          await delay(500);
-        }
-      }
-
-      if (memberCards.length > 0) {
-        const lastCard = memberCards[memberCards.length - 1];
-        await delay(800);
-        smoothScrollTo(lastCard);
-        await delay(1000);
-      }
-
-      await delay(1200);
-      const gallerySection = document.querySelector('.gallery-section');
-      smoothScrollTo(gallerySection);
-      await delay(1400);
-
-      const galleryGrid = document.getElementById('gallery-grid');
-      const galleryItems = [];
-      for (let i = 1; i <= photoCount; i++) {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.innerHTML = `<img src="kenangan/${i}.jpg" alt="Kenangan ${i}">`;
-        galleryGrid.appendChild(item);
-        galleryItems.push(item);
-
-        if (i === 1) {
-          await delay(600);
-          smoothScrollTo(item);
-          await delay(600);
-        }
-        await delay(1000);
-        item.classList.add('show');
-        if (i === Math.ceil(photoCount / 2)) {
-          await delay(500);
-          smoothScrollTo(item);
-          await delay(500);
-        }
-      }
-
-      if (galleryItems.length > 0) {
-        const lastPhoto = galleryItems[galleryItems.length - 1];
-        await delay(800);
-        smoothScrollTo(lastPhoto);
-        await delay(800);
-      }
-
-      await delay(1400);
-      const unknownCard = document.getElementById('unknown-trigger');
-      smoothScrollTo(unknownCard);
-      await delay(1400);
-      unknownCard.classList.add('show');
-      await delay(1000);
-
-      document.getElementById('unknown-trigger').addEventListener('click', () => {
-        const profile = document.getElementById('hidden-profile');
-        profile.classList.add('show');
-        const storyEl = document.getElementById('ahura-story');
-        typeText(storyEl, ahuraStoryText, 80);
-        setTimeout(() => {
-          smoothScrollTo(profile);
-        }, 600);
-      });
-
-      await delay(1600);
-      const footer = document.getElementById('footer-text');
-      smoothScrollTo(footer);
-      await delay(1000);
-      footer.classList.add('show');
-
-      await delay(1600);
-      document.body.style.overflowY = 'auto';
+    if (i === 0) {
+      await delay(600);
+      smoothScrollTo(card);
+      await delay(600);
     }
+    await delay(900);
+    card.classList.add('show');
+    if (i === Math.floor(members.length / 2)) {
+      await delay(500);
+      smoothScrollTo(card);
+      await delay(500);
+    }
+  }
 
-    document.getElementById('start-btn').addEventListener('click', startExperience);
-  </script>
+  if (memberCards.length > 0) {
+    const lastCard = memberCards[memberCards.length - 1];
+    await delay(800);
+    smoothScrollTo(lastCard);
+    await delay(1000);
+  }
+
+  await delay(1200);
+  const gallerySection = document.querySelector('.gallery-section');
+  smoothScrollTo(gallerySection);
+  await delay(1400);
+
+  const galleryGrid = document.getElementById('gallery-grid');
+  const galleryItems = [];
+  for (let i = 1; i <= photoCount; i++) {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.innerHTML = `<img src="kenangan/${i}.jpg" alt="Kenangan ${i}">`;
+    galleryGrid.appendChild(item);
+    galleryItems.push(item);
+
+    if (i === 1) {
+      await delay(600);
+      smoothScrollTo(item);
+      await delay(600);
+    }
+    await delay(1000);
+    item.classList.add('show');
+    if (i === Math.ceil(photoCount / 2)) {
+      await delay(500);
+      smoothScrollTo(item);
+      await delay(500);
+    }
+  }
+
+  if (galleryItems.length > 0) {
+    const lastPhoto = galleryItems[galleryItems.length - 1];
+    await delay(800);
+    smoothScrollTo(lastPhoto);
+    await delay(800);
+  }
+
+  await delay(1400);
+  const unknownCard = document.getElementById('unknown-trigger');
+  smoothScrollTo(unknownCard);
+  await delay(1400);
+  unknownCard.classList.add('show');
+  await delay(1000);
+
+  document.getElementById('unknown-trigger').addEventListener('click', () => {
+    const profile = document.getElementById('hidden-profile');
+    profile.classList.add('show');
+    const storyEl = document.getElementById('ahura-story');
+    typeText(storyEl, ahuraStoryText, 80);
+    setTimeout(() => {
+      smoothScrollTo(profile);
+    }, 600);
+  });
+
+  await delay(1600);
+  const footer = document.getElementById('footer-text');
+  smoothScrollTo(footer);
+  await delay(1000);
+  footer.classList.add('show');
+
+  await delay(1600);
+  document.body.style.overflowY = 'auto';
+}
+
+document.getElementById('start-btn').addEventListener('click', startExperience);
+</script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
