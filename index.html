@@ -383,19 +383,19 @@
       document.getElementById('start-screen').style.opacity = '0';
       document.getElementById('start-screen').style.visibility = 'hidden';
 
-      const audio = document.getElementById('bg-music');
-      audio.volume = 0.5;
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          const handler = () => {
-            audio.play();
-            document.body.removeEventListener('click', handler);
-            document.body.removeEventListener('touchstart', handler);
-          };
-          document.body.addEventListener('click', handler, { once: true });
-          document.body.addEventListener('touchstart', handler, { once: true });
-        });
+      document.getElementById('start-btn').addEventListener('click', async () => {
+  const audio = document.getElementById('bg-music');
+  audio.volume = 0.5;
+  
+  try {
+   await audio.play();
+  } catch (e) {
+    console.warn("Autoplay diblokir:", e);
+    
+  }
+
+  await star
+});
       }
 
       await delay(1000);
@@ -517,6 +517,7 @@
 </body>
 
 </html>
+
 
 
 
